@@ -7,7 +7,7 @@ define(function (require, factory) {
     const flattenChildren = function (children) {
         const map = {};
         children.forEach(function (child, index) {
-            const key = (child._preVdom && child._preVdom.key) || index.toString(36);
+            const key = (child._preVdom && child._preVdom.key) || index;
             map[key] = child;
         })
         return map;
@@ -162,12 +162,14 @@ define(function (require, factory) {
         for (const item of diffQueue) {
             // 移动或者移除的情况       
             if (item.type === def.ELEMENT_DIFF_TYPE.MOVE_EXISTING) {
-                item.parentNode.remove();
+                const childNode = item.parentNode.children[item.fromIndex];
+                childNode.remove();
                 insertChildAt(item);
             } else if (item.type === def.ELEMENT_DIFF_TYPE.INSERT_MARKUP) {
                 insertChildAt(item);
             } else if (item.type === def.ELEMENT_DIFF_TYPE.REMOVE_NODE) {
-                item.parentNode.remove();
+                const childNode = item.parentNode.children[item.fromIndex];
+                childNode.remove();
             }
         }
     }

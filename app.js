@@ -61,6 +61,10 @@ require(["react", "react-dom"], function(React, ReactDOM) {
             return { items: [], text: "" };
         },
         add: function() {
+            if (!this.state.text) {
+                alert("请输入内容")
+                return
+            }
             var nextItems = this.state.items.concat([this.state.text]);
             this.setState({ items: nextItems, text: "" });
         },
@@ -71,14 +75,25 @@ require(["react", "react-dom"], function(React, ReactDOM) {
             })
         },
         onChange: function(e) {
-            this.setState({ text: e.target.value });
+            this.setState({...this.state, text: e.target.value  });
         },
         render: function() {
             var self = this;
             var createItem = function(itemText, index) {
-                return React.createElement("div", {
-                    onclick: self.remove.bind(self, index),
-                }, itemText);
+                return React.createElement("div", null, React.createElement("span", {
+                    style: {
+                        display: "inline-block",
+                        width: "200px",
+                        marginBottom: "10px"
+                    }
+              
+                }, itemText), React.createElement("a", {
+                    href: "#",
+                    style: {
+                        marginLeft: "100px"
+                    },
+                    onclick: self.remove.bind(self, index)
+                }, "remove"));
             };
     
             var lists = this.state.items.map(createItem);

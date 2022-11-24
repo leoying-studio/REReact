@@ -32,13 +32,9 @@ define(function(require) {
    }
 
    DOMComponent.prototype.update = function(nextVDom) {
-    //   console.log(nextVDom)
-    //   const instantiateReactComponent = require('instantiate')
-    //   const vdomInstance = instantiateReactComponent(nextVDom);
-    //   const newEl = vdomInstance.mount();
-    //   this._el.parentNode.replaceChild(newEl, this._el);
-    //   this._el = newEl;
+        this.applyProps(this.props, nextVDom.props)
         this._preVDom = nextVDom;
+        this.props = nextVDom.props;
         this._diff.updateDOMChildren(nextVDom.props.children);
    }
 
